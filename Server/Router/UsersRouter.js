@@ -11,6 +11,29 @@ router.get("/", async (req, res) => {
   res.send(usersList);
 });
 
+// Getting all
+router.post("/", async (req, res) => {
+  const auth = {
+    userID: req.body.userID,
+  };
+  try {
+    const getUser = await Users.find(auth, {
+      _id: 0,
+      username: 1,
+      userID: 1,
+      friends: 1,
+    });
+    if (getUser.length > 0) {
+      res.status(200).send(getUser);
+    } else {
+      res.status(404).send("Not Found");
+    }
+  } catch (err) {
+    console.log("err");
+    res.status(404).send({ message: err });
+  }
+});
+
 // Getting Multi Filterd
 router.get("/addToFriendsList", async (req, res) => {
   console.log("hii this is okk");

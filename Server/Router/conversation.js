@@ -21,12 +21,6 @@ router.post("/:name/:this", async (req, res) => {
   const show = await Conversation.find({
     _id: req.body.id,
   });
-  //   res.send(`<div style="background-color: teal; height:100vh; padding:10px">
-  //    ${show.map((val) => {
-  //      console.log(val.members);
-  //      return `<p style="color: yellow">Data from server <br/> ${val}</p>`;
-  //    })}
-  // </div>`);
   res.send(show);
   console.log("--- /conversation ---", show);
   console.log("--- /conversation end ---");
