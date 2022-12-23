@@ -2,23 +2,12 @@ import React from "react";
 import "./home.css";
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import { get, trusted } from "mongoose";
 
 function Home({ id }) {
   const text = useRef();
-  // const [res, setres] = useState([``]);
-  const [users, setUsers] = useState([``]);
-  const [showChat, setChat] = useState({
-    username: "Click_on",
-    userID: "All users",
-    friends: [
-      { username: " List names to ", userID: "fetch this", roomID: "1234" },
-    ],
-  });
-  const [modelopt, setmodel] = useState(true);
-  const [getMsgFrom, update_getMsgFrom] = useState([
-    { msg: [{ sender: "Dummy", text: "null" }] },
-  ]);
+  const [all_Users, get_all_Users] = useState("all_Users");
+  const [current_user, switch_user] = useState("no_User");
+  const [getMsgFrom, update_getMsgFrom] = useState("messages");
 
   useEffect(() => {
     // getAllConversation();
@@ -29,8 +18,8 @@ function Home({ id }) {
     return axios
       .get("http://localhost:4000")
       .then((response) => {
-        console.log("All Users", response.data);
-        setUsers(response.data);
+        console.log("getAllUsers", response.data);
+        get_all_Users(response.data);
         return response.data;
       })
       .catch((error) => {
@@ -51,14 +40,13 @@ function Home({ id }) {
   //     });
   // }
 
-  function getThisUser(value) {
+  function switch_to_This_User(value) {
     const { _id, username, userID } = value;
     console.log("value on click", value);
-    setChat(value);
-    setmodel(true);
+    switch_user(value);
   }
 
-  function getThisFriend(value) {
+  function show_this_friend_message(value) {
     return axios
       .post("http://localhost:4000/conversation/x/y", {
         id: value,
@@ -79,13 +67,13 @@ function Home({ id }) {
         .patch("http://localhost:4000/conversation/x", {
           id: getMsgFrom[0]._id,
           msg: {
-            sender: showChat.username,
+            sender: current_user.username,
             text: text.current.value,
           },
         })
         .then((response) => {
           response.status === 201
-            ? getThisFriend(getMsgFrom[0]._id)
+            ? show_this_friend_message(getMsgFrom[0]._id)
             : console.log(" getMsgFrom[0]._id ", getMsgFrom[0]._id);
           console.log(" GET ROOM Data ", response.data);
         })
@@ -100,54 +88,62 @@ function Home({ id }) {
       <div className="home">
         <div>
           All users : <br />
-          {users.map((value, index) => {
-            if (value.username !== undefined) {
+          {all_Users !== "all_Users"
+            ? all_Users.map((value, index) => {
+                if (value.username !== undefined) {
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        switch_to_This_User(value);
+                      }}
+                    >
+                      {value.username}
+                    </button>
+                  );
+                }
+              })
+            : null}
+        </div>
+        <div>
+          Messages
+          <br />
+          <button onClick={getAllUsers}>All users data</button>
+          <br />
+          {current_user !== "no_User" ? (
+            current_user.friends.map((value, index) => {
+              const { username, userID, roomID } = value;
               return (
                 <button
                   key={index}
-                  onClick={() => {
-                    getThisUser(value);
-                  }}
+                  onClick={() => show_this_friend_message(roomID)}
                 >
-                  {value.username}
+                  {" "}
+                  {username} & {userID}
                 </button>
               );
-            }
-          })}
-        </div>
-        <div>
-          Messsages
+            })
+          ) : (
+            <div className="lds-dual-ring">
+              <p>Pull Data</p>
+            </div>
+          )}
           <br />
-          {/* <button onClick={getAllConversation}>Get Msg data</button> */}
-          <button onClick={getAllUsers}>All users data</button>
-          {/* {res[0].members !== undefined
-            ? res.map((value, index) => {
+          {current_user !== "no_User" ? (
+            getMsgFrom !== "messages" ? (
+              getMsgFrom[0].msg.map((value, index) => {
                 return (
-                  <div key={index} className="box">
-                    {value.members.map((val, ind) => {
-                      return (
-                        <p key={ind} className="member">
-                          no{index} member name : {val.name}
-                          <br /> ID : {val.Id}{" "}
-                        </p>
-                      );
-                    })}
-                    {value.msg.map((val, ind) => {
-                      return (
-                        <p key={ind} className="msg">
-                          No . {ind} {"  "}
-                          <span className="sender">
-                            sender {val.sender}{" "}
-                          </span>{" "}
-                          <br />
-                          <span className="text"> msg : {val.text}</span>
-                        </p>
-                      );
-                    })}
-                  </div>
+                  <p key={index}>
+                    {value.sender} : {value.text}
+                  </p>
                 );
               })
-            : null} */}
+            ) : (
+              <div className="lds-dual-ring">
+                <p>Pull Message Data </p>
+              </div>
+            )
+          ) : null}
           <form onClick={(e) => e.preventDefault()}>
             <input type="text" ref={text} placeholder="text" />
             <button onClick={() => sendMessage()}>send</button>
@@ -156,40 +152,10 @@ function Home({ id }) {
         <div>
           {" "}
           Current User Data : <br />
-          {modelopt == true ? (
-            <span>
-              <p> username : {showChat.username}</p>
-              <p>user_id: {showChat.userID}</p>
-              <p>Friends : </p>
-              {showChat.friends.length !== 0
-                ? showChat.friends.map((value, index) => {
-                    const { username, userID, roomID } = value;
-                    return (
-                      <button key={index} onClick={() => getThisFriend(roomID)}>
-                        {" "}
-                        {username} & {userID}
-                      </button>
-                    );
-                  })
-                : null}
-              {getMsgFrom[0].msg.map((value, index) => {
-                return (
-                  <p key={index}>
-                    {value.sender} : {value.text}
-                  </p>
-                );
-              })}
-              <p
-                onClick={() => {
-                  setmodel(false);
-                }}
-              >
-                close
-              </p>
-            </span>
-          ) : (
-            <p>Not data to show</p>
-          )}
+          <span>
+            <p> username : {current_user.username}</p>
+            <p>user_id: {current_user.userID}</p>
+          </span>
         </div>
       </div>
     </>
