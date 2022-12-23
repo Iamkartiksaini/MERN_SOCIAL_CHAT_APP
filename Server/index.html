@@ -16,134 +16,15 @@
     <!-- <a href="http://localhost:4000/">hello</a> -->
     <h2>Click to make chat room with</h2>
     <button onclick="makeRoom(`preet`)">Preet</button>
-    <button onclick="sendMSG()">Send Msg</button>
     <button onclick="getSingle()">Get Single Room Req</button>
     <button onclick="AllConversation()">All Conversation</button>
+    <br />
+    <input type="text" id="textInput" />
+    <button onclick="sendMSG()">Send Msg</button>
 
     <div class="ok"></div>
+    <div class="notify"></div>
 
-    <script>
-      const div = document.querySelector(".ok");
-
-      function getSingle() {
-        fetch("http://localhost:4000/conversation/create/ok", {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify({ id: "639e817b6d6238216703af06" }),
-        })
-          .then((res) => {
-            const x = res.json();
-            return x;
-          })
-          .then((res) => {
-            console.log(res);
-            let x = res[0];
-            const { members, msg, _id } = x;
-            div.innerHTML = `
-           <div class="res"> <p>
-                members :   ${members}
-            <br/>msg  : <br/> ${msg.map((val, index) => {
-              return `${index}  <span>${val.sender}</span>
-             <br/> <span>${val.text}</span>
-             <br/>  `;
-            })}
-      ID :  ${_id}
-            <p> 
-                </div>`;
-          });
-      }
-
-      function makeRoom(e) {
-        const x = "kuldeep";
-        const sendTHis = [x, e];
-        fetch("http://localhost:4000/conversation/create", {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify({ members: sendTHis }),
-        })
-          .then((res) => {
-            const x = res.json();
-            return x;
-          })
-          .then((res) => {
-            console.log(res);
-            let x = res[0];
-            const { members, msg, _id } = x;
-            div.innerHTML = `
-           <div class="res"> <p>
-                members :   ${members}
-            <br/>msg  : <br/> ${msg.map((val, index) => {
-              return `${index}  <span>${val.sender}</span>
-             <br/> <span>${val.text}</span>
-             <br/>  `;
-            })}
-      ID :  ${_id}
-            <p> 
-                </div>`;
-          });
-      }
-
-      function sendMSG() {
-        const sendTHis = { sender: "kartik", text: "hello" };
-        fetch("http://localhost:4000/conversation/number", {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          method: "PATCH",
-          body: JSON.stringify({
-            id: "639e817b6d6238216703af06",
-            msg: sendTHis,
-          }),
-        })
-          .then((res) => {
-            const x = res.json();
-            return x;
-          })
-          .then((res) => {
-            console.log("res after sending msg", res);
-            let x = res[0];
-            const { members, msg, _id } = x;
-            div.innerHTML = `
-           <div class="res"> <p>
-                members :   ${members}
-            <br/>msg  : <br/> ${msg.map((val, index) => {
-              return `${index}  <span>${val.sender}</span>
-             <br/> <span>${val.text}</span>
-             <br/>  `;
-            })}
-      ID :  ${_id}
-            <p> 
-                </div>`;
-          });
-      }
-
-      function AllConversation() {
-        const sendTHis = { sender: "kartik", text: "hello" };
-        try {
-          fetch("http://localhost:4000/conversation")
-            .then((res) => {
-              const x = res.json();
-              return x;
-            })
-            .then((res) => {
-              console.log("Getting all conversation", res);
-              res.map((value, index) => {
-                div.innerHTML = `<div class="ok">
-                    <p> msg : ${value.msg.length} ,members : ${value.members.length} , </p>  
-                    </div>`;
-              });
-            });
-        } catch (err) {
-          console.log("err", err);
-        }
-      }
-    </script>
+    <script src="./forHtml.js"></script>
   </body>
 </html>
