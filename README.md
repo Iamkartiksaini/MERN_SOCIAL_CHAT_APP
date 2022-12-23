@@ -1,4 +1,4 @@
-# simple_social_App
+# Simple_SocialChat_App
  This Project is  in React and also in Simple html(Server/index.html) with MongoDB
  
  --- Client/Frontend ---
