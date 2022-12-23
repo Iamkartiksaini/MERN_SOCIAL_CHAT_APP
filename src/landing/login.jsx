@@ -1,13 +1,24 @@
-import React, { useRef } from "react";
+import axios from "axios";
+import React, { useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function Login({ setID }) {
   const idRef = useRef();
+  const [first, setfirst] = useState("ok");
 
   function submit(e) {
     e.preventDefault();
-    console.log("sub of login", idRef.current.value);
-    setID(idRef.current.value);
+    axios
+      .post("http://localhost:4000", { userID: idRef.current.value })
+      .then((response) => {
+        console.log("response User", response);
+        if (response.status !== 404) {
+          setID(response.data[0].username);
+        }
+      })
+      .catch((error) => {
+        setfirst(error.message);
+      });
   }
   return (
     <>
@@ -15,6 +26,7 @@ function Login({ setID }) {
         <div>
           <h1>Chat App</h1>
           <p>Chat with your friends in real times</p>
+          <p>{first === "ok" ? null : first}</p>
         </div>
         <div>
           <form action="">
