@@ -76,13 +76,56 @@ function Home({ id }) {
             ? show_this_friend_message(getMsgFrom[0]._id)
             : console.log(" getMsgFrom[0]._id ", getMsgFrom[0]._id);
           console.log(" GET ROOM Data ", response.data);
+          text.current.value = "";
         })
         .catch((error) => {
           return error;
         });
     }
   }
+  // ---- Add friend ----
+  function createRoom(value) {
+    axios
+      .post("http://localhost:4000/conversation/create", {
+        members: [
+          { name: value.username, userID: value.userID },
+          { name: current_user.username, userID: current_user.userID },
+        ],
+        msg: [],
+      })
+      .then((response) => {
+        function okk() {
+          axios
+            .patch("http://localhost:4000/addFriend", {
+              roomID: response.data._id,
+              friend: {
+                username: value.username,
+                userID: value.username,
+              },
+              user: {
+                username: current_user.username,
+                userID: current_user.username,
+              },
+            })
+            .then((response) => {
+              console.log(" AddfriendsResponse", response.data);
+              getAllUsers();
+            })
+            .catch((error) => {
+              return error;
+            });
+        }
+        return okk();
+      })
+      .catch((error) => {
+        return error;
+      });
+  }
 
+  function addFriend(value) {
+    createRoom(value);
+    // ---- Adding Friend To the User and his/her Friend List ----
+  }
   return (
     <>
       <div className="home">
@@ -92,14 +135,32 @@ function Home({ id }) {
             ? all_Users.map((value, index) => {
                 if (value.username !== undefined) {
                   return (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        switch_to_This_User(value);
-                      }}
-                    >
-                      {value.username}
-                    </button>
+                    <div className="Friend" key={index}>
+                      <button
+                        onClick={() => {
+                          switch_to_This_User(value);
+                        }}
+                        className={
+                          value.username === current_user.username
+                            ? "active"
+                            : null
+                        }
+                      >
+                        {value.username}
+                      </button>
+                      {current_user !== "no_User" ? (
+                        value.username === current_user.username ? null : (
+                          <p
+                            className="addTofriend"
+                            onClick={() => {
+                              addFriend(value);
+                            }}
+                          >
+                            + Friend
+                          </p>
+                        )
+                      ) : null}
+                    </div>
                   );
                 }
               })
@@ -115,6 +176,7 @@ function Home({ id }) {
               const { username, userID, roomID } = value;
               return (
                 <button
+                  className={roomID === getMsgFrom[0]._id ? "active" : null}
                   key={index}
                   onClick={() => show_this_friend_message(roomID)}
                 >
@@ -131,13 +193,20 @@ function Home({ id }) {
           <br />
           {current_user !== "no_User" ? (
             getMsgFrom !== "messages" ? (
-              getMsgFrom[0].msg.map((value, index) => {
-                return (
-                  <p key={index}>
-                    {value.sender} : {value.text}
-                  </p>
-                );
-              })
+              getMsgFrom[0].msg.length === 0 ? (
+                <>
+                  <p>Bot : No Message </p>
+                  <p>Bot : Say,hi! </p>
+                </>
+              ) : (
+                getMsgFrom[0].msg.map((value, index) => {
+                  return (
+                    <p key={index}>
+                      {value.sender} : {value.text}
+                    </p>
+                  );
+                })
+              )
             ) : (
               <div className="lds-dual-ring">
                 <p>Pull Message Data </p>
@@ -146,7 +215,9 @@ function Home({ id }) {
           ) : null}
           <form onClick={(e) => e.preventDefault()}>
             <input type="text" ref={text} placeholder="text" />
-            <button onClick={() => sendMessage()}>send</button>
+            <button id="sendTextButton" onClick={() => sendMessage()}>
+              send
+            </button>
           </form>
         </div>
         <div>

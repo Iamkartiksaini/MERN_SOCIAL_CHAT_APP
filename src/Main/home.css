@@ -27,7 +27,7 @@
   display: flex;
   justify-content: center;
   width: 90%;
-  bottom: 10vh;
+  top: 50vh;
 }
 .home div:nth-of-type(2) form input {
   width: 80%;
@@ -39,15 +39,16 @@
 .home form input:focus {
   outline: none;
 }
-.home form button {
+#sendTextButton {
   background-color: #1976ee;
   color: white;
   border: none;
   border-radius: 0px 6px 6px 0px;
   padding: 7px 15px;
   transition: 0.4s;
+  margin: 0px;
 }
-.home form button:hover {
+#sendTextButton:hover {
   background-color: #1160c7;
 }
 .box {
@@ -64,4 +65,25 @@
 }
 .text {
   background-color: rgb(29, 45, 95);
+}
+button {
+  padding: 3px 5px;
+  margin: 2px;
+  border: 3px solid transparent;
+  border-radius: 4px;
+  text-transform: capitalize;
+  color: aliceblue;
+  background-color: #1976ee;
+  transition: 0.4s ease;
+}
+.active {
+  background-color: #31df21;
+  position: relative;
+  border-left: 3px solid #0090ff;
+}
+.addTofriend {
+  display: none;
+}
+.Friend:hover .addTofriend {
+  display: block;
 }
