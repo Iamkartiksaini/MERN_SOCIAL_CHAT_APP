@@ -4,12 +4,21 @@ import { NavLink } from "react-router-dom";
 
 function Login({ setID }) {
   const idRef = useRef();
+  const idRefUserPass = useRef();
   const [first, setfirst] = useState("ok");
 
   function submit(e) {
     e.preventDefault();
+    const x = {
+      userID: idRef.current.value,
+      password: idRefUserPass.current.value,
+    };
+    console.log("x", x);
     axios
-      .post("http://localhost:4000", { userID: idRef.current.value })
+      .post("http://localhost:4000", {
+        userID: idRef.current.value,
+        password: idRefUserPass.current.value,
+      })
       .then((response) => {
         console.log("response User", response);
         if (response.status !== 404) {
@@ -31,7 +40,7 @@ function Login({ setID }) {
         <div>
           <form action="">
             <input type="text" ref={idRef} placeholder="Username" />
-            <input type="text" placeholder="Password" />
+            <input type="text" ref={idRefUserPass} placeholder="Password" />
             <button type="submit" onClick={submit}>
               Login
             </button>
