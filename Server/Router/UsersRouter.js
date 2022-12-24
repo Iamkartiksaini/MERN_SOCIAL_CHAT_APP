@@ -11,11 +11,13 @@ router.get("/", async (req, res) => {
   res.send(usersList);
 });
 
-// Getting all
+// Getting Single
 router.post("/", async (req, res) => {
   const auth = {
     userID: req.body.userID,
+    password: req.body.password,
   };
+  console.log("auth", auth);
   try {
     const getUser = await Users.find(auth, {
       _id: 0,
@@ -34,6 +36,50 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Patch in User add friend
+router.patch("/addFriend", async (req, res) => {
+  console.log("----add friend");
+  const { friend, user, roomID } = req.body;
+  console.log("roomID", roomID);
+  console.log("friend", friend);
+  console.log("user", user);
+  try {
+    const updateFriend = await Users.updateOne(
+      { username: friend.userID },
+      {
+        $push: {
+          friends: {
+            username: user.username,
+            userID: user.userID,
+            roomID: roomID,
+          },
+        },
+      }
+    );
+    const updateUser = await Users.updateOne(
+      { username: user.userID },
+      {
+        $push: {
+          friends: {
+            username: friend.username,
+            userID: friend.userID,
+            roomID: roomID,
+          },
+        },
+      }
+    );
+
+    // if (updateFriend.length > 0 || updateUser.length > 0) {
+    res.status(200).send(updateUser);
+    // } else {
+    // res.status(404).send("Not Found");
+    // }
+  } catch (err) {
+    console.log("err");
+    res.status(404).send({ message: err });
+  }
+});
+
 // Getting Multi Filterd
 router.get("/addToFriendsList", async (req, res) => {
   console.log("hii this is okk");
@@ -46,10 +92,13 @@ router.get("/addToFriendsList", async (req, res) => {
   res.send(usersList);
 });
 
-router.get("/create/:new", async (req, res) => {
+// Create User
+router.post("/create/:new", async (req, res) => {
   let x = {
-    username: "harsh",
-    userID: "harsh2",
+    username: req.body.username,
+    userID: req.body.userID,
+    password: req.body.password,
+    friends: [],
   };
   const users = new Users(x);
   try {

@@ -37,7 +37,6 @@ router.post("/create", async (req, res) => {
   try {
     const newUser = await users.save();
     res.send(newUser);
-
     console.log(" ---- insert successful ----", newUser);
   } catch (err) {
     res.status(400).json({ message: err.message });
