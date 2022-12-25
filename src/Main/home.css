@@ -79,11 +79,27 @@ button {
 .active {
   background-color: #31df21;
   position: relative;
-  border-left: 3px solid #0090ff;
+  border-left: 3px solid #ffeb3b;
 }
 .addTofriend {
   display: none;
 }
 .Friend:hover .addTofriend {
   display: block;
+}
+.senderName {
+  padding: 4px 6px;
+  color: black;
+  margin-right: 3px;
+}
+.msgCSS {
+  margin: 12px 0px;
+}
+.getMsgFrom {
+  background-color: cadetblue;
+  margin: 4px 0px;
+  font-weight: 600;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
 }

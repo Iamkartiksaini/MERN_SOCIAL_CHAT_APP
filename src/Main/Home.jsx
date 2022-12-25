@@ -191,28 +191,54 @@ function Home({ id }) {
             </div>
           )}
           <br />
-          {current_user !== "no_User" ? (
-            getMsgFrom !== "messages" ? (
-              getMsgFrom[0].msg.length === 0 ? (
-                <>
-                  <p>Bot : No Message </p>
-                  <p>Bot : Say,hi! </p>
-                </>
+          <div className="msgCSS">
+            {current_user !== "no_User" ? (
+              getMsgFrom !== "messages" ? (
+                getMsgFrom[0].msg.length === 0 ? (
+                  <>
+                    <p>Info : No Message Yet </p>
+                    <p>Bot : Say,hi! </p>
+                  </>
+                ) : (
+                  getMsgFrom[0].msg.map((value, index) => {
+                    return (
+                      <p
+                        key={index}
+                        className="getMsgFrom"
+                        style={{
+                          flexDirection:
+                            value.sender === current_user.username
+                              ? "row-reverse"
+                              : "row",
+                        }}
+                      >
+                        <span
+                          style={{
+                            backgroundColor:
+                              value.sender === current_user.username
+                                ? "yellow"
+                                : "#14dd73",
+                            margin:
+                              value.sender === current_user.username
+                                ? "0px 0px 0px 8px"
+                                : "0px 8px 0px 0px",
+                          }}
+                          className="senderName"
+                        >
+                          {value.sender}
+                        </span>
+                        {value.text}
+                      </p>
+                    );
+                  })
+                )
               ) : (
-                getMsgFrom[0].msg.map((value, index) => {
-                  return (
-                    <p key={index}>
-                      {value.sender} : {value.text}
-                    </p>
-                  );
-                })
+                <div className="lds-dual-ring">
+                  <p>Pull Message Data </p>
+                </div>
               )
-            ) : (
-              <div className="lds-dual-ring">
-                <p>Pull Message Data </p>
-              </div>
-            )
-          ) : null}
+            ) : null}
+          </div>
           <form onClick={(e) => e.preventDefault()}>
             <input type="text" ref={text} placeholder="text" />
             <button id="sendTextButton" onClick={() => sendMessage()}>
