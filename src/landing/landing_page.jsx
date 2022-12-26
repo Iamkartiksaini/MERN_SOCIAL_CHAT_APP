@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import "../App.css";
-import { v4 as uuidV4 } from "uuid";
+// import { v4 as uuidV4 } from "uuid";
 import axios from "axios";
 
 function Register({ setID }) {
@@ -39,7 +39,7 @@ function Register({ setID }) {
         <div>
           <form action="">
             <input type="text" ref={idRef} placeholder="Username" />
-            <input type="text" ref={idRefUserID} placeholder="Email ---IMP" />
+            <input type="text" ref={idRefUserID} placeholder="UserID" />
             <input type="text" ref={idRefUserPass} placeholder="Password" />
             {/* <input type="text" placeholder="Password Again" /> */}
             <button type="submit" onClick={submit}>
