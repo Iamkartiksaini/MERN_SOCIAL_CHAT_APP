@@ -10,11 +10,29 @@ function Home({ id }) {
   const [getMsgFrom, update_getMsgFrom] = useState("messages");
 
   useEffect(() => {
-    // getAllConversation();
-    getAllUsers();
+    get_updateof_AllUsers();
   }, []);
 
-  function getAllUsers() {
+  useEffect(() => {
+    if (all_Users !== "all_Users") {
+      all_Users.map((val) => {
+        return val.username == current_user.username ? switch_user(val) : null;
+      });
+    }
+  }, [all_Users]);
+
+  useEffect(() => {
+    if (current_user !== "no_User") {
+      current_user.friends.map((val) => {
+        return val.username == current_user.username ? switch_user(val) : null;
+      });
+    }
+    if (current_user !== "no_User" && current_user.friends.length != 0) {
+      show_this_friend_message(current_user.friends[0].roomID);
+    }
+  }, [current_user]);
+
+  function get_updateof_AllUsers() {
     return axios
       .get("http://localhost:4000")
       .then((response) => {
@@ -27,21 +45,8 @@ function Home({ id }) {
       });
   }
 
-  // function getAllConversation() {
-  //   return axios
-  //     .get("http://localhost:4000/conversation")
-  //     .then((response) => {
-  //       console.log("response.data", response.data);
-  //       setres(response.data);
-  //       return response.data;
-  //     })
-  //     .catch((error) => {
-  //       return error;
-  //     });
-  // }
-
   function switch_to_This_User(value) {
-    const { _id, username, userID } = value;
+    // const { _id, username, userID } = value;
     console.log("value on click", value);
     switch_user(value);
   }
@@ -109,13 +114,13 @@ function Home({ id }) {
             })
             .then((response) => {
               console.log(" AddfriendsResponse", response.data);
-              getAllUsers();
+              get_updateof_AllUsers("room");
             })
             .catch((error) => {
               return error;
             });
         }
-        return okk();
+        okk();
       })
       .catch((error) => {
         return error;
@@ -126,6 +131,13 @@ function Home({ id }) {
     createRoom(value);
     // ---- Adding Friend To the User and his/her Friend List ----
   }
+  let friendList = [];
+  if (current_user != "no_User") {
+    current_user.friends.map((val, ind) => {
+      friendList.push(val.username);
+    });
+  }
+
   return (
     <>
       <div className="home">
@@ -149,7 +161,8 @@ function Home({ id }) {
                         {value.username}
                       </button>
                       {current_user !== "no_User" ? (
-                        value.username === current_user.username ? null : (
+                        value.username === current_user.username ||
+                        friendList.includes(value.username) ? null : (
                           <p
                             className="addTofriend"
                             onClick={() => {
@@ -169,7 +182,7 @@ function Home({ id }) {
         <div>
           Messages
           <br />
-          <button onClick={getAllUsers}>All users data</button>
+          <button onClick={get_updateof_AllUsers}>All users data</button>
           <br />
           {current_user !== "no_User" ? (
             current_user.friends.map((value, index) => {
@@ -260,3 +273,8 @@ function Home({ id }) {
 }
 
 export default Home;
+// add friend
+// 1 room
+// 2 mutual push
+// 3 Refresh All users data
+// update current user with new data

@@ -21,7 +21,9 @@
   flex-basis: 60%;
   position: relative;
 }
-
+.home > div:nth-of-type(2) button {
+  margin: 4px;
+}
 .home div:nth-of-type(2) form {
   position: absolute;
   display: flex;
@@ -66,9 +68,11 @@
 .text {
   background-color: rgb(29, 45, 95);
 }
+.Friend {
+  margin: 6px 0px;
+}
 button {
   padding: 3px 5px;
-  margin: 2px;
   border: 3px solid transparent;
   border-radius: 4px;
   text-transform: capitalize;
@@ -86,6 +90,7 @@ button {
 }
 .Friend:hover .addTofriend {
   display: block;
+  background-color: rgb(77, 74, 74);
 }
 .senderName {
   padding: 4px 6px;
