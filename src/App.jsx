@@ -2,43 +2,73 @@ import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 import Register from "./landing/landing_page.jsx";
 import Login from "./landing/login";
 import Home from "./Main/Home.jsx";
-import useLocalStorage from "./hooks/useLocalStorage";
+import Footer from "./Main/Footer.jsx";
+import "./loading.css";
+import Profile from "./Main/Profile.jsx";
+import Dashboard from "./Main/Dashboard.jsx";
+import { useState } from "react";
 
 function App() {
-  const [id, setID] = useLocalStorage("id");
-  console.log(id == true);
+  const [id, setID] = useState("id");
+
   return (
     <>
       <BrowserRouter>
-        <header style={{ backgroundColor: "teal" }}>
-          <h1>Chat App</h1>
-          <button
+        <div className="MainContainer">
+          <header
             style={{
-              padding: "6px 10px",
-              color: "white",
-              backgroundColor: "transparent",
-            }}
-            onClick={() => {
-              localStorage.clear();
+              backgroundColor: " rgb(0 18 20)",
+              boxShadow: " rgb(255 255 255 / 85%) 15px -4px 4px 6px",
+              zIndex: "23",
+              position: "relative",
             }}
           >
-            <a href="/"> LogOut</a>
-          </button>
-          <br />
-          <NavLink to="/login/home">Home</NavLink>
-          <p>{id ? id + "  " + true : false}</p>
-        </header>
-        {id ? (
-          <Home id={id} />
-        ) : (
+            <h1>Chat App</h1>
+            <button
+              onClick={() => {
+                localStorage.clear();
+              }}
+            >
+              <a
+                style={{
+                  color: "white",
+                }}
+                href="/"
+              >
+                {" "}
+                LogOut
+              </a>
+            </button>
+          </header>
           <Routes>
-            <Route path="/sign_up" element={<Register setID={setID} />}></Route>
-            <Route path="/login" element={<Login setID={setID} />}>
-              <Route path="*" element={<Home id={id} />}></Route>
-            </Route>
-            <Route path="*" element={<Register setID={setID} />}></Route>
+            {id == true ? (
+              <>
+                <Route path="/Dashboard/*" element={<Dashboard id={id} />}>
+                  <Route path="home" element={<Home />}></Route>
+                  <Route path="profile" element={<Profile />}></Route>
+                  <Route path="*" element={<Home />}></Route>
+                </Route>
+                <Route path="*" element={<Dashboard id={id} />}></Route>
+              </>
+            ) : (
+              <>
+                <Route
+                  path="/sign_up"
+                  element={<Register setID={setID} id={id} />}
+                ></Route>
+                <Route
+                  path="/login"
+                  element={<Login setID={setID} id={id} />}
+                ></Route>
+                <Route
+                  path="*"
+                  element={<Login setID={setID} id={id} />}
+                ></Route>
+              </>
+            )}
           </Routes>
-        )}
+          {id == true ? <Footer /> : null}
+        </div>
       </BrowserRouter>
     </>
   );
