@@ -1,11 +1,10 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
-function Login({ setID }) {
+function Login({ setID, id }) {
   const idRef = useRef();
   const idRefUserPass = useRef();
-  const [first, setfirst] = useState("ok");
 
   function submit(e) {
     e.preventDefault();
@@ -13,7 +12,6 @@ function Login({ setID }) {
       userID: idRef.current.value,
       password: idRefUserPass.current.value,
     };
-    console.log("x", x);
     axios
       .post("http://localhost:4000", {
         userID: idRef.current.value,
@@ -22,11 +20,11 @@ function Login({ setID }) {
       .then((response) => {
         console.log("response User", response);
         if (response.status !== 404) {
-          setID(response.data[0].username);
+          setID(true);
         }
       })
       .catch((error) => {
-        setfirst(error.message);
+        console.log(error.message);
       });
   }
   return (
@@ -35,7 +33,6 @@ function Login({ setID }) {
         <div>
           <h1>Chat App</h1>
           <p>Chat with your friends in real times</p>
-          <p>{first === "ok" ? null : first}</p>
         </div>
         <div>
           <form action="">
@@ -45,7 +42,6 @@ function Login({ setID }) {
               Login
             </button>
           </form>
-          {/* <p style={{color:"grey"}}>forget Password ?</p> */}
           <button id="login_btn">
             <NavLink to="/sign_up">Create a New Account </NavLink>
           </button>
