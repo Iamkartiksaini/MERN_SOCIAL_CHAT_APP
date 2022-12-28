@@ -2,7 +2,6 @@ import React from "react";
 import "./home.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import UserFriends from "./Sub/UserFriends";
 
 function Home({ id }) {
   const [all_Users, get_all_Users] = useState("all_Users");
@@ -11,14 +10,6 @@ function Home({ id }) {
   useEffect(() => {
     get_updateof_AllUsers();
   }, []);
-
-  useEffect(() => {
-    if (all_Users !== "all_Users") {
-      all_Users.map((val) => {
-        return val.username == current_user.username ? switch_user(val) : null;
-      });
-    }
-  }, [all_Users]);
 
   function get_updateof_AllUsers() {
     return axios
@@ -32,13 +23,28 @@ function Home({ id }) {
         return error;
       });
   }
-
   function switch_to_This_User(value) {
-    // const { _id, username, userID } = value;
-    console.log("value on click", value);
-    switch_user(value);
+    const x = {
+      userID: value.userID,
+      password: value.password,
+    };
+    axios
+      .post("http://localhost:4000", x)
+      .then((response) => {
+        console.log("response User", response);
+        if (response.status !== 404) {
+          switch_user(response.data[0]);
+          localStorage.setItem(
+            "chatApp-CurrentUser",
+            JSON.stringify(response.data[0])
+          );
+          get_updateof_AllUsers();
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   }
-
   // ---- Add friend ----
   function createRoom(value) {
     axios
@@ -65,13 +71,17 @@ function Home({ id }) {
             })
             .then((response) => {
               console.log(" AddfriendsResponse", response.data);
-              get_updateof_AllUsers("room");
+              const value = {
+                userID: current_user.userID,
+                password: current_user.password,
+              };
+              switch_to_This_User(value);
             })
             .catch((error) => {
               return error;
             });
         }
-        okk();
+        return okk();
       })
       .catch((error) => {
         return error;
@@ -82,23 +92,30 @@ function Home({ id }) {
     createRoom(value);
     // ---- Adding Friend To the User and his/her Friend List ----
   }
+
+  // Set LocalStorage
+  if (all_Users != "all_Users") {
+    if (current_user == "no_User") {
+      localStorage.setItem("chatApp-CurrentUser", JSON.stringify(all_Users[0]));
+      switch_user(all_Users[0]);
+    }
+  }
+  // Get LocalStorage
+  const getCurrentUser = JSON.parse(
+    localStorage.getItem("chatApp-CurrentUser")
+  );
+
   let friendList = [];
-  if (current_user != "no_User") {
-    current_user.friends.map((val, ind) => {
-      friendList.push(val.username);
+  if (current_user != "no_User" && current_user.friends.length != 0) {
+    current_user.friends.map((value) => {
+      friendList.push(value.username);
     });
   }
-
   return (
     <>
       <div className="home">
         <div>
-          All users
-          <br />{" "}
-          <button onClick={get_updateof_AllUsers}>
-            Refresh All Users
-          </button>{" "}
-          <br />
+          All users <br />
           {all_Users !== "all_Users"
             ? all_Users.map((value, index) => {
                 if (value.username !== undefined) {
@@ -110,7 +127,7 @@ function Home({ id }) {
                         }}
                         className={
                           value.username === current_user.username
-                            ? "active"
+                            ? "activeUser"
                             : null
                         }
                       >
@@ -134,18 +151,6 @@ function Home({ id }) {
                 }
               })
             : null}
-        </div>
-        <div>
-          {current_user !== "no_User" ? (
-            <UserFriends activeUser={current_user} />
-          ) : null}
-        </div>
-        <div>
-          Current User Data : <br />
-          <span>
-            <p> username : {current_user.username}</p>
-            <p>user_id: {current_user.userID}</p>
-          </span>
         </div>
       </div>
     </>

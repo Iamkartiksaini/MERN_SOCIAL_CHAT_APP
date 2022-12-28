@@ -1,14 +1,6 @@
 .home {
-  height: 100vmax;
-  width: 100%;
-  background-color: rgb(12, 105, 105);
-  display: flex;
-  color: white;
-  flex-wrap: wrap;
-  position: relative;
-  flex-direction: row;
-  justify-content: flex-start;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #252525;
+  height: inherit;
 }
 .home > div {
   padding: 20px;
@@ -80,7 +72,7 @@ button {
   background-color: #1976ee;
   transition: 0.4s ease;
 }
-.active {
+.activeUser {
   background-color: #31df21;
   position: relative;
   border-left: 3px solid #ffeb3b;
@@ -100,11 +92,19 @@ button {
 .msgCSS {
   margin: 12px 0px;
 }
-.getMsgFrom {
-  background-color: cadetblue;
-  margin: 4px 0px;
-  font-weight: 600;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
+
+footer a {
+  color: white;
 }
+.active {
+  color: #ff5722;
+  scale: 1.2;
+  border-bottom: 4px solid white;
+  border-radius: 4px;
+}
+
+/* 
+bg:#252525
+#314258
+#125e50
+*/
