@@ -1,0 +1,95 @@
+.modal {
+  height: 70vh;
+  padding: 0px;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: max-content;
+  padding: 15px;
+  box-shadow: 0px 0px 2px 0px white;
+  gap: 10px;
+}
+
+.modal-avatar {
+  height: 60px;
+  width: 60px;
+  border: 2px solid #526a6a;
+  border-radius: 50%;
+  background-image: url("https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.modal-friend-info {
+  display: block;
+}
+.modal-friend-info .friend-userID,
+.friend-username {
+  color: #a1a1a1;
+  margin: 4px;
+}
+
+.modal-body {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  height: inherit;
+  width: 100%;
+}
+
+.modal-messages ul {
+  list-style: none;
+  height: inherit;
+  padding: 8px;
+}
+
+.modal-messages ul li {
+  background-color: #323232;
+  margin: 4px 0px;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  animation: 0.4s linear 1 messageAnimation;
+}
+@keyframes messageAnimation {
+  0% {
+    opacity: 0;
+    transform: translateX(50vh);
+  }
+  85% {
+    opacity: 1;
+    transform: translateX(-1vh);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+.modal-body form {
+  position: absolute;
+  bottom: 6vh;
+  width: 100%;
+  padding: 0px 4%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.modal-body form input {
+  border-radius: 6px 0px 0px 6px;
+  padding: 7px;
+  border: none;
+  width: 90%;
+}
+.modal-body form input:focus {
+  outline: none;
+}

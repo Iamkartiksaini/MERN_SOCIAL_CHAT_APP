@@ -1,13 +1,14 @@
 import axios from "axios";
 import React, { useState, useRef } from "react";
-
-function Friend({ getMsgFrom, current_user }) {
+import "./Friend.css";
+function Friend({
+  getMsgFrom,
+  current_user,
+  current_user_friend,
+  update_getMsgFrom,
+}) {
   const text = useRef();
-  let x;
-  if (getMsgFrom != "messages") {
-    x = getMsgFrom;
-  }
-  const [messages, refresh_messages] = useState(x);
+  const [msg, updateMsg] = useState(getMsgFrom);
 
   function sendMessage() {
     if (text.current.value !== "") {
@@ -39,76 +40,93 @@ function Friend({ getMsgFrom, current_user }) {
       })
       .then((response) => {
         console.log(" GET ROOM Data", response.data);
-        refresh_messages(response.data);
+        localStorage.setItem(
+          "chatApp-user-friend",
+          JSON.stringify(response.data[0])
+        );
+        updateMsg(response.data);
+
         return response.data;
       })
       .catch((error) => {
         return error;
       });
   }
+  console.log("current_user_friend", current_user_friend);
 
   return (
     <div>
-      <button
-        onClick={() => {
-          console.log("refresh");
-          show_this_friend_message(getMsgFrom[0]._id);
-        }}
-      >
-        Refresh
-      </button>
-      {messages !== "messages" ? (
-        messages[0].msg.length === 0 ? (
-          <>
-            <p>Info : No Message Yet </p>
-            <p>Bot : Say,hi! </p>
-          </>
-        ) : (
-          messages[0].msg.map((value, index) => {
-            return (
-              <p
-                key={index}
-                className="getMsgFrom"
-                style={{
-                  flexDirection:
-                    value.sender === current_user.username
-                      ? "row-reverse"
-                      : "row",
-                }}
-              >
-                <span
-                  style={{
-                    backgroundColor:
-                      value.sender === current_user.username
-                        ? "yellow"
-                        : "#14dd73",
-                    margin:
-                      value.sender === current_user.username
-                        ? "0px 0px 0px 8px"
-                        : "0px 8px 0px 0px",
-                  }}
-                  className="senderName"
-                >
-                  {value.sender}
-                </span>
-                {value.text}
-              </p>
-            );
-          })
-        )
-      ) : (
-        <div className="lds-dual-ring">
-          <p>Pull Message Data </p>
+      <p style={{ color: "white" }}>
+        {current_user_friend && current_user_friend.username}
+      </p>
+      {msg !== "messages" ? (
+        <div className="modal">
+          <div className="modal-head">
+            <div className="modal-avatar"> </div>
+            <br />
+
+            <div className="friend-info">
+              <span className="friend-name">
+                {current_user_friend && current_user_friend.username}
+              </span>
+              <span className="friend-userID">
+                @{current_user_friend && current_user_friend.userID}
+              </span>
+              <br />
+            </div>
+            <button
+              onClick={() => {
+                update_getMsgFrom("messages");
+              }}
+            >
+              close
+            </button>
+          </div>
+          <div className="modal-body">
+            <div className="modal-messages">
+              <ul>
+                {msg[0].msg.length === 0 ? (
+                  <>
+                    <li style={{ color: "white" }}>Info : No Message Yet</li>
+                    <li>Bot : Say,hi! </li>{" "}
+                  </>
+                ) : (
+                  msg[0].msg.map((value, index) => {
+                    return (
+                      <li
+                        key={index}
+                        style={{
+                          flexDirection:
+                            value.sender === current_user.username
+                              ? "row-reverse"
+                              : "row",
+                        }}
+                      >
+                        {value.text}
+                      </li>
+                    );
+                  })
+                )}
+              </ul>
+            </div>
+            <form onClick={(e) => e.preventDefault()}>
+              <input type="text" ref={text} placeholder="text" />
+              <button id="sendTextButton" onClick={() => sendMessage()}>
+                send
+              </button>
+            </form>{" "}
+          </div>
         </div>
+      ) : (
+        <p>non</p>
       )}
-      <form onClick={(e) => e.preventDefault()}>
-        <input type="text" ref={text} placeholder="text" />
-        <button id="sendTextButton" onClick={() => sendMessage()}>
-          send
-        </button>
-      </form>
     </div>
   );
 }
 
 export default Friend;
+// modal > modal-content > head , body
+// head > img , friend-info > name ,id
+// body > friend-msg , form
+// body > friend-msg if msg length is 0 no msg yet
+// else show msg
