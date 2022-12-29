@@ -6,7 +6,7 @@ import Footer from "./Main/Footer.jsx";
 import "./loading.css";
 import Profile from "./Main/Profile.jsx";
 import Dashboard from "./Main/Dashboard.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [id, setID] = useState("id");

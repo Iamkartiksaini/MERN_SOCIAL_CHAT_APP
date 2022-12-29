@@ -2,6 +2,11 @@
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
+  --backgroundColor: #323232;
+  --button: #323232;
+  --tweet: #252525;
+  --littleBlue: #314258;
+  --littleTeal: #125e50;
 }
 .landing_page {
   background-color: #f0f2f5;
@@ -122,4 +127,13 @@ footer a:hover {
   border-radius: 6px;
   list-style: none;
   color: whitesmoke;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #8c8c8d;
+  border: 3px solid transparent;
+  border-radius: 10px;
 }
