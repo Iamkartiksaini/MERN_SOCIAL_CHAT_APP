@@ -3,7 +3,7 @@
  
  
  
- --- Using MERN
+ --- Using MERN Stack
  
  
  --- Client/Frontend ---
