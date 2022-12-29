@@ -6,11 +6,19 @@ import Footer from "./Main/Footer.jsx";
 import "./loading.css";
 import Profile from "./Main/Profile.jsx";
 import Dashboard from "./Main/Dashboard.jsx";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import secureLocalStorage from "react-secure-storage";
 
 function App() {
   const [id, setID] = useState("id");
-
+  let x = secureLocalStorage.getItem("chatApp-CurrentUser");
+  const y = {
+    username: "no",
+    auth: false,
+  };
+  if (x == null) {
+    secureLocalStorage.setItem("chatApp-CurrentUser", y);
+  }
   return (
     <>
       <BrowserRouter>
@@ -41,14 +49,20 @@ function App() {
             </button>
           </header>
           <Routes>
-            {id == true ? (
+            {id == true || x.auth == true ? (
               <>
-                <Route path="/Dashboard/*" element={<Dashboard id={id} />}>
+                <Route
+                  path="/Dashboard/*"
+                  element={<Dashboard id={id} current_user={x} />}
+                >
                   <Route path="home" element={<Home />}></Route>
                   <Route path="profile" element={<Profile />}></Route>
                   <Route path="*" element={<Home />}></Route>
                 </Route>
-                <Route path="*" element={<Dashboard id={id} />}></Route>
+                <Route
+                  path="*"
+                  element={<Dashboard id={id} logInID={x} />}
+                ></Route>
               </>
             ) : (
               <>
@@ -67,7 +81,7 @@ function App() {
               </>
             )}
           </Routes>
-          {id == true ? <Footer /> : null}
+          {id == true || x.auth == true ? <Footer /> : null}
         </div>
       </BrowserRouter>
     </>
