@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 
 function Login({ setID, id }) {
   const idRef = useRef();
@@ -21,6 +22,13 @@ function Login({ setID, id }) {
         console.log("response User", response);
         if (response.status !== 404) {
           setID(true);
+          const x = {
+            username: response.data[0].username,
+            userID: response.data[0].userID,
+            friends: response.data[0].friends,
+            auth: true,
+          };
+          secureLocalStorage.setItem("chatApp-CurrentUser", x);
         }
       })
       .catch((error) => {
