@@ -27,7 +27,6 @@
 .modal-friend-info {
   display: block;
 }
-.modal-friend-info .friend-userID,
 .friend-username {
   color: #a1a1a1;
   margin: 4px;
@@ -49,7 +48,6 @@
   height: inherit;
   padding: 8px;
 }
-
 .modal-messages ul li {
   background-color: #323232;
   margin: 4px 0px;
@@ -76,7 +74,7 @@
 }
 .modal-body form {
   position: absolute;
-  bottom: 6vh;
+  top: 57.5vh;
   width: 100%;
   padding: 0px 4%;
   display: flex;

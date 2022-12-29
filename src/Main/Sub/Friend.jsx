@@ -69,7 +69,10 @@ function Friend({
               <span className="friend-name">
                 {current_user_friend && current_user_friend.username}
               </span>
-              <span className="friend-userID">
+              <span
+                className="friend-userID"
+                style={{ color: " #a1a1a1", margin: "4px" }}
+              >
                 @{current_user_friend && current_user_friend.userID}
               </span>
               <br />
