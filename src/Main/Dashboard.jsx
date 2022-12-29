@@ -1,10 +1,11 @@
-import React from "react";
-import { NavLink, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Messages from "./Message";
 import Profile from "./Profile";
 
 function Dashboard({ id }) {
+  const [current_user, switch_user] = useState("no_User");
   return (
     <>
       <p>Dashborad is active</p>

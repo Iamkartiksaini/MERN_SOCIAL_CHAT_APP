@@ -86,6 +86,9 @@
   margin: 0;
   padding: 0;
 }
+.profile-tabs-link:hover {
+  color: #e6ecf0;
+}
 
 .profile-tabs-item {
   flex: 1;
@@ -99,6 +102,7 @@
   font-weight: 600;
   color: #a7a7a7;
   text-decoration: none;
+  transition: 0.2s;
 }
 
 .profile-tabs-link.active {
@@ -107,11 +111,10 @@
 /* tweet */
 
 .tweet {
-  max-width: 100vh;
-  background-color: #323030;
+  background-color: #323232;
   box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
-  margin: 18px 0px;
   border-radius: 4px;
+  margin: 20px 0px;
 }
 
 .tweet-header {
@@ -201,13 +204,14 @@
 .tweet-stats-link {
   display: flex;
   align-items: center;
-  color: #657786;
+  color: #999999;
   text-decoration: none;
+  transition: 0.2s;
 }
 
 .tweet-stats-link:hover,
 .tweet-stats-link:focus {
-  color: #1da1f2;
+  color: #e6ecf0;
 }
 
 .tweet-stats-count {

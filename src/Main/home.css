@@ -1,38 +1,8 @@
 .home {
-  background-color: #252525;
+  background-color: #323232;
   height: inherit;
 }
-.home > div {
-  padding: 20px;
-  border-left: 3px solid rgb(61, 58, 58);
-}
-.home > div:nth-of-type(1) {
-  flex-basis: 10%;
-}
-.home > div:nth-of-type(2) {
-  flex-basis: 60%;
-  position: relative;
-}
-.home > div:nth-of-type(2) button {
-  margin: 4px;
-}
-.home div:nth-of-type(2) form {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  width: 90%;
-  top: 50vh;
-}
-.home div:nth-of-type(2) form input {
-  width: 80%;
-  padding: 7px 15px;
-  border-radius: 6px 0px 0px 6px;
-  border: none;
-  background-color: rgb(218, 214, 214);
-}
-.home form input:focus {
-  outline: none;
-}
+
 #sendTextButton {
   background-color: #1976ee;
   color: white;
@@ -45,26 +15,10 @@
 #sendTextButton:hover {
   background-color: #1160c7;
 }
-.box {
-  padding: 6px;
-}
-.member {
-  background: rgb(1, 194, 201);
-}
-.msg {
-  background: rgb(131, 112, 4);
-}
-.sender {
-  background-color: green;
-}
-.text {
-  background-color: rgb(29, 45, 95);
-}
-.Friend {
-  margin: 6px 0px;
-}
+
 button {
   padding: 3px 5px;
+  margin: 4px 0px;
   border: 3px solid transparent;
   border-radius: 4px;
   text-transform: capitalize;
@@ -97,14 +51,8 @@ footer a {
   color: white;
 }
 .active {
-  color: #ff5722;
+  color: #ff4b13;
   scale: 1.2;
   border-bottom: 4px solid white;
   border-radius: 4px;
 }
-
-/* 
-bg:#252525
-#314258
-#125e50
-*/
