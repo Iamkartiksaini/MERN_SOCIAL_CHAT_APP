@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Friend from "./Sub/Friend";
 import axios from "axios";
 import "./Sub/Friend.css";
+import secureLocalStorage from "react-secure-storage";
 
 const dummy =
   "https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
@@ -10,7 +11,7 @@ function Messages() {
   // const [message, setMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [getMsgFrom, update_getMsgFrom] = useState("messages");
-  const current_user = JSON.parse(localStorage.getItem("chatApp-CurrentUser"));
+  const current_user = secureLocalStorage.getItem("chatApp-Switch-User");
 
   // const handleMessageChange = (event) => {
   //   setMessage(event.target.value);
@@ -57,7 +58,7 @@ function Messages() {
         />
       )}
       <div className="friends">
-        <ul class="friends-list">
+        <ul className="friends-list">
           {current_user.friends.length == 0 ? (
             <p>No friends</p>
           ) : (
@@ -107,7 +108,6 @@ function Messages() {
               <span className="friend-name">Jane Doe</span>
               <span className="friend-username">@jane_doe</span>
               <br />
-              {/* <button onClick={toggleModal}>close</button> */}
             </div>
             <div className="friend-msg">
               <ul>
@@ -116,14 +116,6 @@ function Messages() {
                 </li>
               </ul>
             </div>
-            {/* <form onSubmit={handleMessageSubmit}>
-              <textarea
-                value={message}
-                onChange={handleMessageChange}
-                placeholder="Write your message here"
-              />
-              <button type="submit">Send</button>
-            </form> */}
           </div>
         </div>
       )}

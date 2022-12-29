@@ -1,8 +1,10 @@
 import React from "react";
 import "./Profile.css";
+import secureLocalStorage from "react-secure-storage";
 
 function Profile({ id }) {
-  const x = JSON.parse(localStorage.getItem("chatApp-CurrentUser"));
+  const x = secureLocalStorage.getItem("chatApp-Switch-User");
+
   const { username, userID, password } = x;
   return (
     <div className="profile">

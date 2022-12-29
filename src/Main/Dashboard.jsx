@@ -5,10 +5,9 @@ import Messages from "./Message";
 import Profile from "./Profile";
 
 function Dashboard({ id }) {
-  const [current_user, switch_user] = useState("no_User");
   return (
     <>
-      <p>Dashborad is active</p>
+      <p>Dashborad is active </p>
       <Routes path="/Dashboard">
         <Route path="profile" element={<Profile />}></Route>
         <Route path="home" element={<Home />}></Route>

@@ -1,6 +1,10 @@
 .home {
   background-color: #323232;
   height: inherit;
+  padding: 10px;
+}
+.home .Friend {
+  width: max-content;
 }
 
 #sendTextButton {
