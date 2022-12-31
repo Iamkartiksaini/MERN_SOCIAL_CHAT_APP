@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState, useRef } from "react";
 import "./Friend.css";
+import secureLocalStorage from "react-secure-storage";
+
 function Friend({
   getMsgFrom,
   current_user,
@@ -40,12 +42,11 @@ function Friend({
       })
       .then((response) => {
         console.log(" GET ROOM Data", response.data);
-        localStorage.setItem(
-          "chatApp-user-friend",
-          JSON.stringify(response.data[0])
+        secureLocalStorage.setItem(
+          "chatApp-Coversation_b/w_user-this_friend",
+          response.data[0]
         );
         updateMsg(response.data);
-
         return response.data;
       })
       .catch((error) => {
