@@ -1,4 +1,3 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
@@ -22,9 +21,11 @@ db.once("open", () => console.log("connected to database"));
 const user = require("./Router/UsersRouter.js");
 const conversation = require("./Router/conversation.js");
 const message = require("./Router/messages");
+const posts = require("./Router/Posts.js");
 app.use("/", user);
 app.use("/conversation", conversation);
 app.use("/msg", message);
+app.use("/posts", posts);
 
 app.listen(port, () => {
   console.log("listening on port", port);
