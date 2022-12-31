@@ -8,23 +8,9 @@ const dummy =
   "https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
 
 function Messages() {
-  // const [message, setMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [getMsgFrom, update_getMsgFrom] = useState("messages");
   const current_user = secureLocalStorage.getItem("chatApp-Switch-User");
-
-  // const handleMessageChange = (event) => {
-  //   setMessage(event.target.value);
-  // };
-
-  // const handleMessageSubmit = (event) => {
-  //   event.preventDefault();
-  //   setMessage(""); // Clear the message input
-  // };
-
-  // const toggleModal = () => {
-  //   setModalVisible(!modalVisible);
-  // };
 
   function show_this_friend_message(value) {
     return axios
@@ -34,9 +20,9 @@ function Messages() {
       .then((response) => {
         console.log(" GET ROOM Data", response.data);
         update_getMsgFrom(response.data);
-        localStorage.setItem(
-          "chatApp-user-friend",
-          JSON.stringify(response.data[0])
+        secureLocalStorage.setItem(
+          "chatApp-Coversation_b/w_user-this_friend",
+          response.data[0]
         );
         return response.data;
       })
@@ -44,9 +30,10 @@ function Messages() {
         return error;
       });
   }
-  const current_user_friend = JSON.parse(
-    localStorage.getItem("user-friend-conversation")
+  const current_user_friend = secureLocalStorage.getItem(
+    "ChatApp-user_getThisFriend-conversation"
   );
+
   return (
     <div className="Message">
       {getMsgFrom == "messages" ? null : (
@@ -68,9 +55,9 @@ function Messages() {
                   key={index}
                   onClick={() => {
                     show_this_friend_message(value.roomID);
-                    localStorage.setItem(
-                      "user-friend-conversation",
-                      JSON.stringify(value)
+                    secureLocalStorage.setItem(
+                      "ChatApp-user_getThisFriend-conversation",
+                      value
                     );
                     // toggleModal();
                   }}

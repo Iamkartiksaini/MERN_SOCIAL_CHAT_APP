@@ -3,10 +3,12 @@ import "./home.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
+import Posts from "./Sub/Posts";
 
 function Home({ id }) {
   const [all_Users, get_all_Users] = useState("all_Users");
   const [current_user, switch_user] = useState("no_User");
+
   // Get LocalStorage
   const x = secureLocalStorage.getItem("chatApp-Switch-User");
 
@@ -100,14 +102,6 @@ function Home({ id }) {
     // ---- Adding Friend To the User and his/her Friend List ----
   }
 
-  // Set LocalStorage
-  if (all_Users != "all_Users") {
-    if (current_user == "no_User") {
-      localStorage.setItem("chatApp-CurrentUser", JSON.stringify(all_Users[0]));
-      switch_user(all_Users[0]);
-    }
-  }
-
   let friendList = [];
   if (current_user != "no_User" && current_user.friends.length != 0) {
     current_user.friends.map((value) => {
@@ -117,42 +111,48 @@ function Home({ id }) {
   return (
     <>
       <div className="home">
-        <h1 style={{ color: "white", padding: "5px 0px" }}> All users </h1>{" "}
-        <br />
-        {all_Users !== "all_Users"
-          ? all_Users.map((value, index) => {
-              if (value.username !== undefined) {
-                return (
-                  <div className="Friend" key={index}>
-                    <button
-                      onClick={() => {
-                        switch_to_This_User(value);
-                      }}
-                      className={
-                        value.username === current_user.username
-                          ? "activeUser"
-                          : null
-                      }
-                    >
-                      {value.username}
-                    </button>
-                    {current_user !== "no_User" ? (
-                      friendList.includes(value.username) ? null : (
-                        <p
-                          className="addTofriend"
-                          onClick={() => {
-                            addFriend(value);
-                          }}
-                        >
-                          + Friend
-                        </p>
-                      )
-                    ) : null}
-                  </div>
-                );
-              }
-            })
-          : null}
+        <div className="All_Users">
+          <h1 style={{ color: "white", padding: "5px 0px" }}> All users </h1>{" "}
+          <br />
+          {all_Users !== "all_Users"
+            ? all_Users.map((value, index) => {
+                if (value.username !== undefined) {
+                  return (
+                    <div className="Friend" key={index}>
+                      <button
+                        onClick={() => {
+                          switch_to_This_User(value);
+                        }}
+                        className={
+                          value.username === current_user.username
+                            ? "activeUser"
+                            : null
+                        }
+                      >
+                        {value.username}
+                      </button>
+                      {current_user !== "no_User" ? (
+                        friendList.includes(value.username) ||
+                        value.username == x.username ? null : (
+                          <p
+                            className="addTofriend"
+                            onClick={() => {
+                              addFriend(value);
+                            }}
+                          >
+                            + Friend
+                          </p>
+                        )
+                      ) : null}
+                    </div>
+                  );
+                }
+              })
+            : null}
+        </div>
+        <div className="Posts">
+          <Posts />
+        </div>
       </div>
     </>
   );
