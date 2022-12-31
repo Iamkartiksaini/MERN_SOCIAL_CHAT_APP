@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
   console.log("hii this is okk");
   const usersList = await Users.find();
   // const deleteUser = await Users.deleteMany({ username: "harsh" });
-  console.log("hii", usersList);
+  console.log("--- users data fetched ---");
   res.send(usersList);
 });
 
@@ -24,6 +24,7 @@ router.post("/", async (req, res) => {
       username: 1,
       userID: 1,
       friends: 1,
+      password: 1,
     });
     if (getUser.length > 0) {
       res.status(200).send(getUser);
