@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useRef } from "react";
 import "./Friend.css";
 import secureLocalStorage from "react-secure-storage";
+import { user } from "../../Request/User_Request";
 
 function Friend({
   getMsgFrom,
@@ -11,6 +12,10 @@ function Friend({
 }) {
   const text = useRef();
   const [msg, updateMsg] = useState(getMsgFrom);
+  let zz = user().get_updateof_AllUsers();
+  zz.then((res) => {
+    console.log("res", res);
+  });
 
   function sendMessage() {
     if (text.current.value !== "") {
@@ -53,7 +58,6 @@ function Friend({
         return error;
       });
   }
-  console.log("current_user_friend", current_user_friend);
 
   return (
     <div>
