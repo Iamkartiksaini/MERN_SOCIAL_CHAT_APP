@@ -18,6 +18,7 @@
 }
 .home .Posts form {
   position: fixed;
+  z-index: 10;
   top: 85.5vh;
   width: 82%;
   padding: 10px 4% 20px 4%;
