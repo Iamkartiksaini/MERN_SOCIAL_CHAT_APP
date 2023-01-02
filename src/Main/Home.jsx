@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
 import Posts from "./Sub/Posts";
-
 function Home({ id }) {
   const [all_Users, get_all_Users] = useState("all_Users");
   const [current_user, switch_user] = useState("no_User");
@@ -23,6 +22,7 @@ function Home({ id }) {
     return axios
       .get("http://localhost:4000")
       .then((response) => {
+        console.log("all user data", response.data);
         get_all_Users(response.data);
         return response.data;
       })
@@ -39,11 +39,12 @@ function Home({ id }) {
       .post("http://localhost:4000", x)
       .then((response) => {
         if (response.status !== 404) {
-          const { username, userID, friends } = response.data[0];
+          const { password, username, userID, friends } = response.data[0];
           const x = {
             username,
             userID,
             friends,
+            password,
           };
           switch_user(x);
           secureLocalStorage.setItem("chatApp-Switch-User", x);
@@ -54,6 +55,7 @@ function Home({ id }) {
         console.log(error.message);
       });
   }
+
   // ---- Add friend ----
   function createRoom(value) {
     axios
@@ -71,15 +73,14 @@ function Home({ id }) {
               roomID: response.data._id,
               friend: {
                 username: value.username,
-                userID: value.username,
+                userID: value.userID,
               },
               user: {
                 username: current_user.username,
-                userID: current_user.username,
+                userID: current_user.userID,
               },
             })
             .then((response) => {
-              console.log(" AddfriendsResponse", response.data);
               const value = {
                 userID: current_user.userID,
                 password: current_user.password,

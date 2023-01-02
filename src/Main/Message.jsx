@@ -86,26 +86,6 @@ function Messages() {
           )}
         </ul>
       </div>
-      {/* Modal */}
-      {modalVisible && (
-        <div className="modal">
-          <div className="modal-content">
-            <img src="" alt="Avatar" />
-            <div className="friend-info">
-              <span className="friend-name">Jane Doe</span>
-              <span className="friend-username">@jane_doe</span>
-              <br />
-            </div>
-            <div className="friend-msg">
-              <ul>
-                <li>
-                  <p>hii</p>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

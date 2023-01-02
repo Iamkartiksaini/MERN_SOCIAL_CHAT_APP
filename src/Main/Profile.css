@@ -122,6 +122,12 @@
   right: 10px;
   top: 10px;
 }
+.Dlt_Button {
+  position: absolute;
+  right: 10px;
+  top: 40px;
+}
+
 .tweet-header {
   display: flex;
   align-items: center;
