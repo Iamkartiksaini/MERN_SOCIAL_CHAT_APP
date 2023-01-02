@@ -5,16 +5,8 @@ const Conversation = require("../models/conversation_model.js");
 // Getting all
 router.get("/", async (req, res) => {
   const show = await Conversation.find({}, { _id: 1, members: 1, msg: 1 });
-  //   res.send(`<div style="background-color: teal; height:100vh; padding:10px">
-  //    ${show.map((val) => {
-  //      console.log(val.members);
-  //      return `<p style="color: yellow">Data from server <br/> ${val}</p>`;
-  //    })}
-  // </div>`);
   res.send(show);
-  console.log("--- /conversation ---", show);
-  console.log("--- /conversation end ---");
-  show;
+  console.log("--- get all conversation req  ---");
 });
 // GET SINGLE
 router.post("/:name/:this", async (req, res) => {
@@ -22,14 +14,12 @@ router.post("/:name/:this", async (req, res) => {
     _id: req.body.id,
   });
   res.send(show);
-  console.log("--- /conversation ---", show);
-  console.log("--- /conversation end ---");
-  show;
+  console.log("--- get single conversation req ---");
 });
 
 // Creating One
 router.post("/create", async (req, res) => {
-  console.log("--- req ---", req);
+  console.log("--- req ---", req.body);
   const users = new Conversation({
     members: req.body.members,
     msg: req.body.msg,
@@ -46,8 +36,6 @@ router.post("/create", async (req, res) => {
 // Patch MSG Sending MSG  ---
 router.patch("/:any", async (req, res) => {
   console.log(" ---- SEND MSG Attemption ----");
-  console.log(" ---- SEND BODy ----", req.body);
-
   try {
     const sendMSG = await Conversation.updateOne(
       {

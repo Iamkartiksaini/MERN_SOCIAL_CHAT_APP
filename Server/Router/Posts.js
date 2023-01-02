@@ -57,13 +57,14 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-// Delete a tweet by ID
-router.delete("/:id", getTweet, async (req, res) => {
+// Delete Post
+router.post("/delete", async (req, res) => {
+  console.log("--- Delete req body ---", req.body);
   try {
-    await res.tweet.remove();
-    res.json({ message: "Deleted This tweet" });
+    const deletepost = await Posts.deleteOne({ _id: req.body.id });
+    res.status(200).json(deletepost);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 

@@ -4,7 +4,6 @@ const Users = require("../models/user_model.js");
 
 // Getting all
 router.get("/", async (req, res) => {
-  console.log("hii this is okk");
   const usersList = await Users.find();
   // const deleteUser = await Users.deleteMany({ username: "harsh" });
   console.log("--- users data fetched ---");
@@ -19,14 +18,9 @@ router.post("/", async (req, res) => {
   };
   console.log("auth", auth);
   try {
-    const getUser = await Users.find(auth, {
-      _id: 0,
-      username: 1,
-      userID: 1,
-      friends: 1,
-      password: 1,
-    });
+    const getUser = await Users.find(auth);
     if (getUser.length > 0) {
+      console.log("sending this on add user", getUser);
       res.status(200).send(getUser);
     } else {
       res.status(404).send("Not Found");
@@ -41,12 +35,11 @@ router.post("/", async (req, res) => {
 router.patch("/addFriend", async (req, res) => {
   console.log("----add friend");
   const { friend, user, roomID } = req.body;
-  console.log("roomID", roomID);
-  console.log("friend", friend);
-  console.log("user", user);
+  console.log("req.body", req.body);
+
   try {
     const updateFriend = await Users.updateOne(
-      { username: friend.userID },
+      { userID: friend.userID },
       {
         $push: {
           friends: {
@@ -58,7 +51,7 @@ router.patch("/addFriend", async (req, res) => {
       }
     );
     const updateUser = await Users.updateOne(
-      { username: user.userID },
+      { userID: user.userID },
       {
         $push: {
           friends: {
