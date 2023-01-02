@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../Profile.css";
 import secureLocalStorage from "react-secure-storage";
-import { user } from "../../Request/User_Request.js";
+import { postRequest } from "../../Request/Post_Request.js";
 
 function Posts() {
   const text = useRef();
@@ -19,7 +19,6 @@ function Posts() {
     return axios
       .get("http://localhost:4000/posts")
       .then((response) => {
-        console.log("all_Posts", response.data);
         updatePosts(response.data);
         return response.data;
       })
@@ -29,10 +28,14 @@ function Posts() {
   }
 
   function x(value) {
-    if (value == "post" && text.current.value != "") {
+    if (
+      value == "post" &&
+      text.current.value != "" &&
+      typeof current_user == "object"
+    ) {
       console.log("post");
       try {
-        user()
+        postRequest()
           .makePost(current_user, text)
           .then((res) => {
             getAllPosts();
@@ -45,7 +48,7 @@ function Posts() {
     if (value == "edit" && text.current.value != "") {
       console.log("this post id to id", editPostID);
       try {
-        user()
+        postRequest()
           .editPost(editPostID, text)
           .then((res) => {
             getAllPosts();
@@ -57,6 +60,11 @@ function Posts() {
       }
     }
   }
+  function deleteReq(value) {
+    postRequest().deletePost(value);
+    getAllPosts();
+  }
+
   return (
     <>
       <h1 style={{ borderLeft: "5px solid white", paddingLeft: "4px " }}>
@@ -78,39 +86,43 @@ function Posts() {
         }}
       >
         {" "}
-        {posts == "null"
-          ? null
-          : posts.map((value, index) => {
-              const { username, userID, _id, createdAt } = value;
-              const tweet = text;
-              const date = new Date(Date.parse(createdAt));
-              const year = date.getFullYear();
-              const month = date.getMonth() + 1; // months are zero-indexed
-              const day = date.getDate();
-              const hour = date.getHours();
-              const minute = date.getMinutes();
-              const second = date.getSeconds();
+        {posts == "null" ||
+        typeof posts[0] != "object" ||
+        current_user == null ? (
+          <h1>Choose a user </h1>
+        ) : (
+          posts.map((value, index) => {
+            const { username, userID, _id, createdAt } = value;
+            const tweet = text;
+            const date = new Date(Date.parse(createdAt));
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1; // months are zero-indexed
+            const day = date.getDate();
+            const hour = date.getHours();
+            const minute = date.getMinutes();
+            const second = date.getSeconds();
 
-              return (
-                <div
-                  className="tweet"
-                  key={index}
-                  style={{ backgroundColor: "#464646" }}
-                >
-                  <div className="tweet-header">
-                    <img
-                      src="https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-                      alt="Avatar"
-                      className="tweet-avatar"
-                    />
-                    <div className="tweet-header-info">
-                      <h1 className="tweet-name">{username}</h1>
-                      <h2 className="tweet-username">@{userID}</h2>
-                      <p className="tweet-date">
-                        Time : {hour} - {minute} - {second}s <br /> Date :{day}{" "}
-                        - {month} - {year}
-                      </p>
-                    </div>
+            return (
+              <div
+                className="tweet"
+                key={index}
+                style={{ backgroundColor: "#464646" }}
+              >
+                <div className="tweet-header">
+                  <img
+                    src="https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
+                    alt="Avatar"
+                    className="tweet-avatar"
+                  />
+                  <div className="tweet-header-info">
+                    <h1 className="tweet-name">{username}</h1>
+                    <h2 className="tweet-username">@{userID}</h2>
+                    <p className="tweet-date">
+                      Time : {hour} - {minute} - {second}s <br /> Date :{day} -{" "}
+                      {month} - {year}
+                    </p>
+                  </div>
+                  {current_user.userID == userID ? (
                     <button
                       onClick={() => {
                         console.log("Post id", _id);
@@ -122,41 +134,54 @@ function Posts() {
                     >
                       Edit
                     </button>
-                  </div>
-                  <p className="tweet-text">{value.text}</p>
-                  <div className="tweet-image">
-                    <img
-                      height="170px"
-                      width="170px"
-                      src="https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-                      alt="Food"
-                    />
-                  </div>
-                  <div className="tweet-stats">
-                    <ul className="tweet-stats-list">
-                      <li className="tweet-stats-item">
-                        <a href="#" className="tweet-stats-link">
-                          <i className="fas fa-comment">Comment</i>
-                          <span className="tweet-stats-count">12</span>
-                        </a>
-                      </li>
-                      <li className="tweet-stats-item">
-                        <a href="#" className="tweet-stats-link">
-                          <i className="fas fa-retweet">Retweet</i>
-                          <span className="tweet-stats-count">34</span>
-                        </a>
-                      </li>
-                      <li className="tweet-stats-item">
-                        <a href="#" className="tweet-stats-link">
-                          <i className="fas fa-heart">Likes</i>
-                          <span className="tweet-stats-count">56</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                  ) : null}
+
+                  {current_user.userID == userID ? (
+                    <button
+                      onClick={() => {
+                        deleteReq(_id);
+                      }}
+                      className="Dlt_Button"
+                    >
+                      Delete
+                    </button>
+                  ) : null}
                 </div>
-              );
-            })}{" "}
+                <p className="tweet-text">{value.text}</p>
+                <div className="tweet-image">
+                  <img
+                    height="170px"
+                    width="170px"
+                    src="https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
+                    alt="Food"
+                  />
+                </div>
+                <div className="tweet-stats">
+                  <ul className="tweet-stats-list">
+                    <li className="tweet-stats-item">
+                      <a href="#" className="tweet-stats-link">
+                        <i className="fas fa-comment">Comment</i>
+                        <span className="tweet-stats-count">12</span>
+                      </a>
+                    </li>
+                    <li className="tweet-stats-item">
+                      <a href="#" className="tweet-stats-link">
+                        <i className="fas fa-retweet">Retweet</i>
+                        <span className="tweet-stats-count">34</span>
+                      </a>
+                    </li>
+                    <li className="tweet-stats-item">
+                      <a href="#" className="tweet-stats-link">
+                        <i className="fas fa-heart">Likes</i>
+                        <span className="tweet-stats-count">56</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            );
+          })
+        )}{" "}
       </div>
     </>
   );

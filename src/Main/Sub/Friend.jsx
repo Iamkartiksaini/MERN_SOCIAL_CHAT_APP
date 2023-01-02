@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Friend.css";
 import secureLocalStorage from "react-secure-storage";
 import { user } from "../../Request/User_Request";
@@ -12,11 +12,14 @@ function Friend({
 }) {
   const text = useRef();
   const [msg, updateMsg] = useState(getMsgFrom);
-  let zz = user().get_updateof_AllUsers();
-  zz.then((res) => {
-    console.log("res", res);
-  });
+  useEffect(() => {
+    user().get_updateof_AllUsers();
+  }, [msg]);
 
+  const activeFriend = secureLocalStorage.getItem(
+    "chatApp-Coversation_b/w_user-this_friend"
+  );
+  console.log("Active user", current_user);
   function sendMessage() {
     if (text.current.value !== "") {
       return axios
@@ -89,6 +92,13 @@ function Friend({
             >
               close
             </button>
+            <button
+              onClick={() => {
+                show_this_friend_message(activeFriend._id);
+              }}
+            >
+              Refresh
+            </button>
           </div>
           <div className="modal-body">
             <div className="modal-messages">
@@ -96,7 +106,7 @@ function Friend({
                 {msg[0].msg.length === 0 ? (
                   <>
                     <li style={{ color: "white" }}>Info : No Message Yet</li>
-                    <li>Bot : Say,hi! </li>{" "}
+                    <li>Suggestion : Say,hi! </li>{" "}
                   </>
                 ) : (
                   msg[0].msg.map((value, index) => {
@@ -133,8 +143,3 @@ function Friend({
 }
 
 export default Friend;
-// modal > modal-content > head , body
-// head > img , friend-info > name ,id
-// body > friend-msg , form
-// body > friend-msg if msg length is 0 no msg yet
-// else show msg
