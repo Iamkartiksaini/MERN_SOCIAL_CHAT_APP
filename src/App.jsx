@@ -52,9 +52,10 @@ function App() {
             {id == true || x.auth == true ? (
               <>
                 <Route
-                  path="/Dashboard/*"
+                  path="/Dashboard"
                   element={<Dashboard id={id} current_user={x} />}
                 >
+                  <Route path="home" index element={<Home />}></Route>
                   <Route path="home" element={<Home />}></Route>
                   <Route path="profile" element={<Profile />}></Route>
                   <Route path="*" element={<Home />}></Route>
@@ -81,7 +82,7 @@ function App() {
               </>
             )}
           </Routes>
-          {id == true || x.auth == true ? <Footer /> : null}
+          {id == true || x.auth == true || x.auth == null ? <Footer /> : null}
         </div>
       </BrowserRouter>
     </>
