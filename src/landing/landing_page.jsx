@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import "../App.css";
-// import { v4 as uuidV4 } from "uuid";
 import axios from "axios";
+import secureLocalStorage from "react-secure-storage";
+import { v4 as uuidV4 } from "uuid";
 
 function Register({ setID }) {
   const idRef = useRef();
@@ -19,15 +20,24 @@ function Register({ setID }) {
         password: idRefUserPass.current.value,
       })
       .then((response) => {
-        console.log("getAllUsers", response.data);
+        const x = {
+          username: idRef.current.value,
+          userID: idRefUserID.current.value,
+          password: idRefUserPass.current.value,
+          auth: true,
+        };
+
+        setID(true); // if set id is inside than page directed to the dashboard
+        secureLocalStorage.setItem("chatApp-CurrentUser", x);
         return response.data;
       })
       .catch((error) => {
         return error;
       });
-    setID(idRef.current.value);
+    //   setID(true); if set id is outside than page directed to the Login page
     // setID(uuidV4());
   }
+  console.log("uuid", uuidV4());
   return (
     <>
       <div className="landing_page">
