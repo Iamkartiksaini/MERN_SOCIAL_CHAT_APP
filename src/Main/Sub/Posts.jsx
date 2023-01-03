@@ -3,6 +3,7 @@ import axios from "axios";
 import "../Profile.css";
 import secureLocalStorage from "react-secure-storage";
 import { postRequest } from "../../Request/Post_Request.js";
+import { user } from "../../Request/User_Request";
 
 function Posts() {
   const text = useRef();
@@ -38,8 +39,12 @@ function Posts() {
         postRequest()
           .makePost(current_user, text)
           .then((res) => {
-            getAllPosts();
-            text.current.value = "";
+            if (res.status == 201) {
+              const x = { _id: res.data._id };
+              user().patchPost(current_user, x);
+              getAllPosts();
+              text.current.value = "";
+            }
           });
       } catch (err) {
         console.log("err", err);
@@ -89,7 +94,7 @@ function Posts() {
         {posts == "null" ||
         typeof posts[0] != "object" ||
         current_user == null ? (
-          <h1>Choose a user </h1>
+          <h1> {current_user !== null ? "Posts : 0" : "Choose a user"} </h1>
         ) : (
           posts.map((value, index) => {
             const { username, userID, _id, createdAt } = value;

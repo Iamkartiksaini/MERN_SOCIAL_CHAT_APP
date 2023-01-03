@@ -19,7 +19,7 @@ function Friend({
   const activeFriend = secureLocalStorage.getItem(
     "chatApp-Coversation_b/w_user-this_friend"
   );
-  console.log("Active user", current_user);
+
   function sendMessage() {
     if (text.current.value !== "") {
       return axios
@@ -34,7 +34,6 @@ function Friend({
           response.status === 201
             ? show_this_friend_message(getMsgFrom[0]._id)
             : console.log(" getMsgFrom[0]._id ", getMsgFrom[0]._id);
-          console.log(" GET ROOM Data ", response.data);
           text.current.value = "";
         })
         .catch((error) => {
