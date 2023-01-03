@@ -39,12 +39,14 @@ function Home({ id }) {
       .post("http://localhost:4000", x)
       .then((response) => {
         if (response.status !== 404) {
-          const { password, username, userID, friends } = response.data[0];
+          const { password, username, userID, friends, posts } =
+            response.data[0];
           const x = {
             username,
             userID,
             friends,
             password,
+            posts,
           };
           switch_user(x);
           secureLocalStorage.setItem("chatApp-Switch-User", x);

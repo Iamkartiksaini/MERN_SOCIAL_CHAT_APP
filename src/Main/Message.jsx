@@ -8,7 +8,6 @@ const dummy =
   "https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
 
 function Messages() {
-  const [modalVisible, setModalVisible] = useState(false);
   const [getMsgFrom, update_getMsgFrom] = useState("messages");
   const current_user = secureLocalStorage.getItem("chatApp-Switch-User");
 
@@ -18,7 +17,6 @@ function Messages() {
         id: value,
       })
       .then((response) => {
-        console.log(" GET ROOM Data", response.data);
         update_getMsgFrom(response.data);
         secureLocalStorage.setItem(
           "chatApp-Coversation_b/w_user-this_friend",
