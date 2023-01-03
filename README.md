@@ -15,3 +15,11 @@
  2. MongoDB
  3. Mongoose
  4. cors 
+
+--- U Can  ---
+Login and Create Account
+Add another Accounts/User to Friend List and Message them
+Switch Accounts 
+Make Posts 
+Edit and Delete your Post
+See Your posts only
