@@ -24,6 +24,17 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Get a multi tweet by ID
+router.post("/allUserPosts", async (req, res) => {
+  try {
+    const tweets = await Posts.find({ $or: req.body.posts });
+    res.status(200).json(tweets);
+    console.log("user all posts ----", tweets);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Create a new tweet
 router.post("/", async (req, res) => {
   const tweet = new Posts({

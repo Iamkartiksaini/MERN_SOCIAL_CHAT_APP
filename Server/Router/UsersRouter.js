@@ -5,7 +5,6 @@ const Users = require("../models/user_model.js");
 // Getting all
 router.get("/", async (req, res) => {
   const usersList = await Users.find();
-  // const deleteUser = await Users.deleteMany({ username: "harsh" });
   console.log("--- users data fetched ---");
   res.send(usersList);
 });
@@ -74,6 +73,26 @@ router.patch("/addFriend", async (req, res) => {
   }
 });
 
+router.patch("/updateUserPosts", async (req, res) => {
+  try {
+    const updatePost = await Users.updateOne(
+      { userID: req.body.userID },
+      {
+        $push: {
+          posts: req.body.postID,
+        },
+      }
+    );
+    const updateUser = await Users.find(
+      { userID: req.body.userID },
+      { friends: 0 }
+    );
+    res.status(200).json(updateUser);
+  } catch (err) {
+    res.json({ err });
+  }
+});
+
 // Getting Multi Filterd
 router.get("/addToFriendsList", async (req, res) => {
   console.log("hii this is okk");
@@ -93,6 +112,7 @@ router.post("/create/:new", async (req, res) => {
     userID: req.body.userID,
     password: req.body.password,
     friends: [],
+    posts: [],
   };
   const users = new Users(x);
   try {
