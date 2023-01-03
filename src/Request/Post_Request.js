@@ -12,8 +12,8 @@ export function postRequest() {
             text: text.current.value,
           })
           .then((response) => {
-            return response.status === 201
-              ? response.data
+            return response.status == 201
+              ? response
               : console.log("Create Posts Failed");
           })
           .catch((error) => {
@@ -48,6 +48,9 @@ export function postRequest() {
         .catch((error) => {
           return error;
         });
+    },
+    userPostsOnly: function (posts) {
+      return axios.post("http://localhost:4000/posts/allUserPosts", { posts });
     },
   };
 }

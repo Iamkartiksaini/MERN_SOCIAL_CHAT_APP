@@ -12,39 +12,22 @@ export function user() {
           return error;
         });
     },
-    makePost: function (current_user, text) {
-      if (text.current.value !== "") {
-        const { username, userID } = current_user;
-        return axios
-          .post("http://localhost:4000/posts", {
-            username,
-            userID,
-            text: text.current.value,
-          })
-          .then((response) => {
-            return response.status === 201
-              ? response.data
-              : console.log("Create Posts Failed");
-          })
-          .catch((error) => {
-            return error;
-          });
-      }
-    },
-    editPost: function (id, text) {
-      return axios
-        .patch("http://localhost:4000/posts/123", {
-          id,
-          text: text.current.value,
+    patchPost: function (current_user, postID) {
+      axios
+        .patch("http://localhost:4000/updateUserPosts", {
+          postID,
+          userID: current_user.userID,
         })
         .then((response) => {
-          return response.status === 201
-            ? response.data
-            : console.log("Create Posts Failed");
+          return response.data;
         })
         .catch((error) => {
           return error;
         });
+    },
+    auth: function (current_user) {
+      const { userID, password } = current_user;
+      return axios.post("http://localhost:4000", { userID, password });
     },
   };
 }
