@@ -49,7 +49,7 @@ function App() {
             </button>
           </header>
           <Routes>
-            {id == true || x.auth == true ? (
+            {id == true || (x.auth != undefined && x.auth == true) ? (
               <>
                 <Route
                   path="/Dashboard"
