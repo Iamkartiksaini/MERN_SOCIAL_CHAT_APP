@@ -18,6 +18,7 @@ function Register({ setID }) {
         username: idRef.current.value,
         userID: idRefUserID.current.value,
         password: idRefUserPass.current.value,
+        profileImage: "",
       })
       .then((response) => {
         const x = {

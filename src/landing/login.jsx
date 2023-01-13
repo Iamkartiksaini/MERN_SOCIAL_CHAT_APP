@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
+import { useDispatch } from "react-redux";
 
 function Login({ setID, id }) {
+  const dispatch = useDispatch();
   const idRef = useRef();
   const idRefUserPass = useRef();
 
@@ -22,13 +24,15 @@ function Login({ setID, id }) {
         console.log("response User", response);
         if (response.status !== 404) {
           setID(true);
-          const x = {
+          const user = {
             username: response.data[0].username,
             userID: response.data[0].userID,
             friends: response.data[0].friends,
+            posts: response.data[0].posts,
             auth: true,
           };
-          secureLocalStorage.setItem("chatApp-CurrentUser", x);
+          dispatch({ type: "auth", user });
+          secureLocalStorage.setItem("chatApp-CurrentUser", user);
         }
       })
       .catch((error) => {
