@@ -5,6 +5,18 @@ const usersSchema = new mongoose.Schema({
     type: String,
     reqiured: true,
   },
+  bio: {
+    type: String,
+    reqiured: false,
+  },
+  profileImage: {
+    type: String,
+    reqiured: false,
+  },
+  coverImage: {
+    type: String,
+    reqiured: false,
+  },
   userID: {
     type: String,
     reqiured: true,
@@ -14,6 +26,10 @@ const usersSchema = new mongoose.Schema({
     reqiured: true,
   },
   friends: {
+    type: Array,
+    reqiured: false,
+  },
+  posts: {
     type: Array,
     reqiured: false,
   },

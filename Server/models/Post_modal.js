@@ -9,6 +9,10 @@ const twitterPostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profileImage: {
+    type: String,
+    required: false,
+  },
   text: {
     type: String,
     required: true,
