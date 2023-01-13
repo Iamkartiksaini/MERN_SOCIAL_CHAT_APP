@@ -39,14 +39,30 @@ function Home({ id }) {
       .post("http://localhost:4000", x)
       .then((response) => {
         if (response.status !== 404) {
-          const { password, username, userID, friends, posts } =
-            response.data[0];
+          const {
+            password,
+            username,
+            userID,
+            friends,
+            posts,
+            profileImage,
+            coverImage,
+            bio,
+          } = response.data[0];
+          let img;
+          profileImage == ""
+            ? (img =
+                "https://images.pexels.com/photos/2103864/pexels-photo-2103864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
+            : (img = profileImage);
           const x = {
             username,
             userID,
             friends,
             password,
             posts,
+            profileImage: img,
+            coverImage,
+            bio,
           };
           switch_user(x);
           secureLocalStorage.setItem("chatApp-Switch-User", x);
@@ -121,7 +137,7 @@ function Home({ id }) {
             ? all_Users.map((value, index) => {
                 if (value.username !== undefined) {
                   return (
-                    <div className="Friend" key={index}>
+                    <div className="Friend" key={index} title={value.username}>
                       <button
                         onClick={() => {
                           switch_to_This_User(value);

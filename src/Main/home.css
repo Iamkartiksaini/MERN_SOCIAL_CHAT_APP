@@ -2,6 +2,8 @@
   background-color: #323232;
   height: inherit;
   padding: 10px;
+  width: inherit;
+  /* position: absolute; */
   display: flex;
   flex-direction: row;
 }

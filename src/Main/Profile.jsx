@@ -1,37 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Profile.css";
 import secureLocalStorage from "react-secure-storage";
-import axios from "axios";
-import Posts from "./Sub/Posts";
 import UserPosts from "./Sub/Posts/UserPosts";
 
 function Profile({ id }) {
-  const [posts, updatePost] = useState("null");
   const x = secureLocalStorage.getItem("chatApp-Switch-User");
-  const current_user = x;
-  const { username, userID, password } = x;
+  const { username, userID, bio, friends, password, profileImage, coverImage } =
+    x;
+  console.log("user", x);
   return (
     <div className="profile">
       <div className="profile-header">
         <div className="profile-avatar">
-          <img
-            src="https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-            alt="Avatar"
+          <div
+            style={{
+              backgroundImage: `url(${
+                profileImage == ""
+                  ? "https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
+                  : profileImage
+              })`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              height: "100%",
+              width: "100%",
+              borderRadius: "50%",
+            }}
+            className="tweet-avatar"
           />
         </div>
         <div className="profile-info">
           <h1 className="profile-name">{username}</h1>
           <h2 className="profile-username">@{userID}</h2>
-          <p className="profile-bio">Software engineer and avid Twitter user</p>
+
+          <p className="profile-bio">
+            {" "}
+            Bio <br />
+            {bio == "" ? "new user" : bio}
+          </p>
           <ul className="profile-stats">
             <li>
-              <span className="profile-stat-count">1234</span> Tweets
+              <span className="profile-stat-count">{x.posts.length}</span>{" "}
+              Tweets
             </li>
             <li>
-              <span className="profile-stat-count">5678</span> Following
+              <span className="profile-stat-count">{friends.length}</span>{" "}
+              Following
             </li>
             <li>
-              <span className="profile-stat-count">9101</span> Followers
+              <span className="profile-stat-count">{friends.length}</span>{" "}
+              Followers
             </li>
           </ul>
         </div>
