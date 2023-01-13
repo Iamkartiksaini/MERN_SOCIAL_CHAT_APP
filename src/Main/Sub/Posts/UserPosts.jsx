@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
 import { postRequest } from "../../../Request/Post_Request";
 import { user } from "../../../Request/User_Request";
@@ -39,7 +38,7 @@ function UserPosts() {
         <h1> {current_user !== null ? "Posts : 0" : "Choose a user"} </h1>
       ) : (
         posts.map((value, index) => {
-          const { username, userID, _id, createdAt, text } = value;
+          const { username, userID, _id, createdAt, profileImage } = value;
           const date = new Date(Date.parse(createdAt));
           const year = date.getFullYear();
           const month = date.getMonth() + 1; // months are zero-indexed
@@ -54,11 +53,22 @@ function UserPosts() {
               style={{ backgroundColor: "#464646", width: "80%" }}
             >
               <div className="tweet-header">
-                <img
-                  src="https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-                  alt="Avatar"
+                <div
+                  style={{
+                    backgroundImage: `url(${
+                      profileImage == ""
+                        ? "https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
+                        : profileImage
+                    })`,
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    height: "50px",
+                    width: "50px",
+                    borderRadius: "50%",
+                  }}
                   className="tweet-avatar"
                 />
+
                 <div className="tweet-header-info">
                   <h1 className="tweet-name">{username}</h1>
                   <h2 className="tweet-username">@{userID}</h2>
