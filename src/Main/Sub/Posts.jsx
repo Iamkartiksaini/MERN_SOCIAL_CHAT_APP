@@ -97,7 +97,7 @@ function Posts() {
           <h1> {current_user !== null ? "Posts : 0" : "Choose a user"} </h1>
         ) : (
           posts.map((value, index) => {
-            const { username, userID, _id, createdAt } = value;
+            const { username, userID, _id, createdAt, profileImage } = value;
             const tweet = text;
             const date = new Date(Date.parse(createdAt));
             const year = date.getFullYear();
@@ -114,9 +114,19 @@ function Posts() {
                 style={{ backgroundColor: "#464646" }}
               >
                 <div className="tweet-header">
-                  <img
-                    src="https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="Avatar"
+                  <div
+                    style={{
+                      backgroundImage: `url(${
+                        profileImage == ""
+                          ? "https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
+                          : profileImage
+                      })`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      height: "50px",
+                      width: "50px",
+                      borderRadius: "50%",
+                    }}
                     className="tweet-avatar"
                   />
                   <div className="tweet-header-info">
