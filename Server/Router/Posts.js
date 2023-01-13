@@ -39,6 +39,7 @@ router.post("/allUserPosts", async (req, res) => {
 router.post("/", async (req, res) => {
   const tweet = new Posts({
     username: req.body.username,
+    profileImage: req.body.profileImage,
     userID: req.body.userID,
     text: req.body.text,
   });

@@ -15,11 +15,10 @@ router.post("/", async (req, res) => {
     userID: req.body.userID,
     password: req.body.password,
   };
-  console.log("auth", auth);
   try {
     const getUser = await Users.find(auth);
     if (getUser.length > 0) {
-      console.log("sending this on add user", getUser);
+      console.log(" user Auth", getUser);
       res.status(200).send(getUser);
     } else {
       res.status(404).send("Not Found");
@@ -107,12 +106,17 @@ router.get("/addToFriendsList", async (req, res) => {
 
 // Create User
 router.post("/create/:new", async (req, res) => {
+  let y;
+  req.body.profileImage == "" ? (y = "") : (y = req.body.profileImage);
   let x = {
     username: req.body.username,
     userID: req.body.userID,
     password: req.body.password,
+    profileImage: y,
+    coverImage: y,
     friends: [],
     posts: [],
+    bio: "",
   };
   const users = new Users(x);
   try {
